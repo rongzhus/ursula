@@ -58,6 +58,9 @@
       user_domain_name: default
       username: admin
       password: "{{ secrets.admin_password }}"
+  register: add_user_result
+  until: add_user_result|success
+  retries: 3
   with_items: "{{ keystone.users }}"
   # If the username is not cloud_admin or monitor, create/update user.
   # If the name is cloud_admin or monitor, and the user does not exist, create user.
