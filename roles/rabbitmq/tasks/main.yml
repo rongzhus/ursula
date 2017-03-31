@@ -39,7 +39,7 @@
     update_cache: yes
   with_items:
     - rabbitmq-server=3.6.6*
-  when: upgrade | default('False') | bool
+  when: upgrade | default(False)
 
 - name: create systemd override dir
   file:
@@ -90,7 +90,7 @@
 
 # Create the cluster if desired
 - include: cluster.yml
-  when: rabbitmq.cluster|bool
+  when: rabbitmq.cluster
 
 - name: ensure rabbit is started
   service:
@@ -126,9 +126,9 @@
   tags:
     - monitoring
     - common
-  when: monitoring.enabled|default('True')|bool
+  when: monitoring.enabled|default(True)
 
 - include: serverspec.yml
   tags:
     - serverspec
-  when: serverspec.enabled|default('False')|bool
+  when: serverspec.enabled|default(False)

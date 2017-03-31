@@ -33,8 +33,8 @@
     msg: "Triggering service restart for upgrade"
   changed_when: True
   notify: restart ceilometer services
-  when: code_has_changed | default('False') | bool and
-        upgrade | default('False') | bool
+  when: code_has_changed | default(False) and
+        upgrade | default(False)
 
 - name: create ceilometer user in mongodb
   mongodb_user:
@@ -62,4 +62,4 @@
   tags:
     - monitoring
     - common
-  when: monitoring.enabled|default('True')|bool
+  when: monitoring.enabled|default(True)

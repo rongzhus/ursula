@@ -139,7 +139,7 @@
 
 - name: neutron vxlan reset
   command: /usr/local/bin/neutron-reset -d vxlan
-  when: neutron.vxlan_reset.enabled|default('False')|bool
+  when: neutron.vxlan_reset.enabled|default(False)
 
 - include: logging.yml
   tags:
@@ -149,4 +149,4 @@
 - include: serverspec.yml
   tags:
     - serverspec
-  when: serverspec.enabled|default('False')|bool
+  when: serverspec.enabled|default(False)

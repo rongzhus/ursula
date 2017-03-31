@@ -117,12 +117,12 @@
   with_items:
     - "{{ glance.services.glance_api }}"
     - "{{ glance.services.glance_registry }}"
-  when: (database_create.changed or force_sync|default('false')|bool)
+  when: (database_create.changed or force_sync|default(false))
   tags: db-migrate
 
 - name: sync glance database
   command: glance-manage db_sync
-  when: database_create.changed or force_sync|default('false')|bool
+  when: database_create.changed or force_sync|default(false)
   run_once: true
   changed_when: true
   notify:
@@ -139,7 +139,7 @@
   changed_when: True
   notify: restart glance services
   tags: ['ceph', 'ceph-client']
-  when: (code_has_changed | default('False') | bool and upgrade | default('False') | bool) or
+  when: (code_has_changed | default(False) and upgrade | default(False)) or
         (glance.store_ceph | default(false) and cephclient_upgraded|default(false))
 
 - meta: flush_handlers
@@ -157,7 +157,7 @@
   tags:
     - monitoring
     - common
-  when: monitoring.enabled|default('True')|bool
+  when: monitoring.enabled|default(True)
 
 - include: logging.yml
   tags:
@@ -167,4 +167,4 @@
 - include: serverspec.yml
   tags:
     - serverspec
-  when: serverspec.enabled|default('False')|bool
+  when: serverspec.enabled|default(False)

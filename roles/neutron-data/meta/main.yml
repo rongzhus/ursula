@@ -10,8 +10,8 @@ dependencies:
     install_inspec_controls: [neutron_data]
     tags: inspec
     when:
-      - inspec.enabled|bool
-      - inspec.controls.neutron_data.enabled|bool
+      - inspec.enabled
+      - inspec.controls.neutron_data.enabled
   - role: neutron-common
   - role: openstack-firewall
     rule_name: VXLAN

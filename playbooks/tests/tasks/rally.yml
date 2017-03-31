@@ -7,7 +7,7 @@
 
     - name: copy ceph Rally test profile template into place
       copy: src=rally/bbc-cloud-validate-ceph.yml dest=./bbc-cloud-validate-ceph.yml mode=0444
-      when: cinder.enabled|bool
+      when: cinder.enabled
 
     - name: run Rally script
       script: ./rally/run.sh -e "{{ cinder.enabled }}" -t "{{ build_tag }}"

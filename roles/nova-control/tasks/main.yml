@@ -66,7 +66,7 @@
 
 - name: sync nova database
   command: nova-manage db sync
-  when: database_create.changed or force_sync|default('false')|bool
+  when: database_create.changed or force_sync|default(false)
   run_once: true
   changed_when: true
   notify: restart nova services
@@ -75,7 +75,7 @@
 
 - name: sync nova api database
   command: nova-manage api_db sync
-  when: database_create.changed or force_sync|default('false')|bool
+  when: database_create.changed or force_sync|default(false)
   run_once: true
   changed_when: true
   notify: restart nova services
@@ -87,8 +87,8 @@
     msg: "Triggering service restart for upgrade"
   changed_when: True
   notify: restart nova services
-  when: code_has_changed | default('False') | bool and
-        upgrade | default('False') | bool
+  when: code_has_changed | default(False) and
+        upgrade | default(False)
 
 - meta: flush_handlers
 
@@ -108,4 +108,4 @@
   tags:
     - monitoring
     - common
-  when: monitoring.enabled|default('True')|bool
+  when: monitoring.enabled|default(True)

@@ -20,4 +20,4 @@
                args='-d /etc/serverspec -s warning' use_sudo=true
                interval={{ serverspec.interval }}
   notify: restart sensu-client
-  when: serverspec.enabled|bool
+  when: serverspec.enabled

@@ -163,7 +163,7 @@
   environment: "{{ env_vars|default({}) }}"
 
 - include: playbooks/cinder-upgrade.yml
-  when: cinder.enabled|bool
+  when: cinder.enabled
 
 - name: upgrade heat
   hosts: controller
@@ -176,7 +176,7 @@
       restart: False
       database_create:
         changed: false
-      when: heat.enabled|bool
+      when: heat.enabled
   environment: "{{ env_vars|default({}) }}"
 
 # Ceilometer block
@@ -190,13 +190,13 @@
   roles:
     - role: ceilometer-data
       restart: False
-      when: ceilometer.enabled|bool
+      when: ceilometer.enabled
 
     - role: stop-services
       services:
         - ceilometer-agent-compute
       must_exist: False
-      when: ceilometer.enabled|bool
+      when: ceilometer.enabled
   environment: "{{ env_vars|default({}) }}"
 
 - name: start the restarts
@@ -223,10 +223,10 @@
         - ceilometer-alarm-evaluator
         - ceilometer-alarm-notifier
       must_exist: False
-      when: ceilometer.enabled|bool
+      when: ceilometer.enabled
 
     - role: ceilometer-control
-      when: ceilometer.enabled|bool
+      when: ceilometer.enabled
   environment: "{{ env_vars|default({}) }}"
 
 - name: start ceilometer data services
@@ -241,7 +241,7 @@
       service:
         name: ceilometer-polling
         state: started
-      when: ceilometer.enabled|bool
+      when: ceilometer.enabled
 
 - name: stop the restarts
   hosts: all:!vyatta-*

@@ -25,14 +25,14 @@
     name: check-glance-store
     plugin: check-glance-store.py
     args: "--imagedir={{ glance.sync.dir }} --criticality {{ glance.monitoring.sensu_checks.check_glance_store.criticality }}"
-  when: (glance.store_smart|bool and not swift.enabled|bool and not ceph.enabled) or
-        (not glance.store_swift|bool and not glance.store_ceph and glance.store_file|bool)
+  when: (glance.store_smart and not swift.enabled and not ceph.enabled) or
+        (not glance.store_swift and not glance.store_ceph and glance.store_file)
   notify: restart sensu-client
 
 - name: glance metrics
   template: src=etc/collectd/plugins/glance.conf dest=/etc/collectd/plugins/glance.conf
   notify: restart collectd
-  when: collectd is defined and collectd.enabled|bool
+  when: collectd is defined and collectd.enabled
   tags: collectd
 
 - name: glance sla metrics

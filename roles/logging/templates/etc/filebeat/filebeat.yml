@@ -4,7 +4,7 @@ output:
   logstash:
     hosts:
       - "{{ logging.forward.host }}:{{ logging.forward.port }}"
-{% if logging.forward.tls.enabled|bool and logging.forward.tls.ca_cert %}
+{% if logging.forward.tls.enabled and logging.forward.tls.ca_cert %}
     ssl:
       certificate_authorities:
         - "/usr/local/share/ca-certificates/logging-forward.crt"

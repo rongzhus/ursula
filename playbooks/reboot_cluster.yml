@@ -60,7 +60,7 @@
           delegate_to: localhost
           become: false
         - include: 'check_compute_services.yml'
-      when: reboot_computes_in_serial|default('True')|bool
+      when: reboot_computes_in_serial|default(True)
       tags: reboot_compute
 
 # or do computes en masse
@@ -79,7 +79,7 @@
                   timeout={{ reboot_timeout | default('500') }}
         delegate_to: localhost
         become: false
-      when: not (reboot_computes_in_serial|default('True')|bool)
+      when: not (reboot_computes_in_serial|default(True))
       tags: reboot_compute
 
 # computes en masse - check services after reboots
@@ -87,7 +87,7 @@
   tasks:
     - block:
         - include: 'check_compute_services.yml'
-      when: not (reboot_computes_in_serial|default('True')|bool)
+      when: not (reboot_computes_in_serial|default(True))
       tags: reboot_compute
 
 - hosts: swiftnode

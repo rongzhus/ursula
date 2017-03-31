@@ -2,7 +2,7 @@
 - name: create loopback file
   command: dd if=/dev/zero of={{ manage_disks.loopback.file }} bs=1 count=0 seek={{ manage_disks.loopback.size }}
            creates={{ manage_disks.loopback.file }}
-  when: manage_disks.loopback.enabled|bool
+  when: manage_disks.loopback.enabled
   register: loopback
 
 - name: create loopback device

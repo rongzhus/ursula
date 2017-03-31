@@ -92,7 +92,7 @@
 - name: setup keystone sso template
   template: src=etc/keystone/sso_callback_template.html
             dest=/etc/keystone/sso_callback_template.html
-  when: keystone.federation.enabled|bool
+  when: keystone.federation.enabled
   notify: restart keystone services
 
 - name: set ownership and permissions for logging.conf
@@ -104,7 +104,7 @@
   when: openstack_install_method == 'distro'
 
 - include: openidc.yml
-  when: keystone.federation.enabled|bool and keystone.federation.sp.oidc.enabled|bool
+  when: keystone.federation.enabled and keystone.federation.sp.oidc.enabled
 
 - name: keystone apache vhost (ubuntu)
   template: src=etc/apache2/sites-available/keystone.conf
@@ -123,7 +123,7 @@
   tags: keystone-federation
 
 - include: saml.yml
-  when: keystone.federation.enabled|bool and keystone.federation.sp.saml.enabled|bool
+  when: keystone.federation.enabled and keystone.federation.sp.saml.enabled
 
 - name: configure keystone
   template: src={{ item }} dest=/etc/keystone/
@@ -137,7 +137,7 @@
   set_fact: policy_for_horizon=True
   when:
     - horizon is defined
-    - horizon.customize|default('False')|bool
+    - horizon.customize|default(False)
 
 - name: configure custom keystone policy
   template:
@@ -148,11 +148,11 @@
     group: "{{ openstack_meta.apache[ursula_os].group }}"
 
 - include: k2k-idp.yml
-  when: keystone.federation.enabled|bool and keystone.federation.idp.k2k.enabled|bool
+  when: keystone.federation.enabled and keystone.federation.idp.k2k.enabled
 
 - name: sync keystone database
   command: keystone-manage db_sync
-  when: database_create.changed or force_sync|default('false')|bool
+  when: database_create.changed or force_sync|default(false)
   run_once: true
   changed_when: true
   notify: restart keystone services
@@ -164,8 +164,8 @@
     msg: "Triggering service restart for upgrade"
   changed_when: True
   notify: restart keystone services
-  when: code_has_changed | default('False') | bool and
-        upgrade | default('False') | bool
+  when: code_has_changed | default(False) and
+        upgrade | default(False)
 
 - name: enable keystone apache site
   apache2_site: name=keystone state=present
@@ -174,7 +174,7 @@
   when: ursula_os == 'ubuntu'
 
 - include: ldap.yml
-  when: keystone.ldap_domain.enabled|default('False')|bool
+  when: keystone.ldap_domain.enabled|default(False)
 
 - meta: flush_handlers
 
@@ -186,7 +186,7 @@
 
 - name: start shibboleth service
   service: name=shibd state=started enabled=true
-  when: keystone.federation.enabled|bool and keystone.federation.sp.saml.enabled|bool
+  when: keystone.federation.enabled and keystone.federation.sp.saml.enabled
 
 - name: add cron job to clean up expired tokens
   template:
@@ -205,7 +205,7 @@
   tags:
     - monitoring
     - common
-  when: monitoring.enabled|default('True')|bool
+  when: monitoring.enabled|default(True)
 
 - include: logging.yml
   tags:
@@ -215,4 +215,4 @@
 - include: serverspec.yml
   tags:
     - serverspec
-  when: serverspec.enabled|default('False')|bool
+  when: serverspec.enabled|default(False)

@@ -16,4 +16,4 @@
   tags: 
     - monitoring
     - sensu-checks
-  when: monitoring.enabled|default('True')|bool
+  when: monitoring.enabled|default(True)

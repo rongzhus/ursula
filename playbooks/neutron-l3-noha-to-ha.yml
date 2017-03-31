@@ -7,7 +7,7 @@
   - name: get list of all router ids
     shell: . /root/stackrc; neutron router-list --all-tenants -c id | awk '{print $2}'  | awk 'NF && !/^id$/'
     register: router_id_list
-    when: neutron.l3ha.enabled|bool
+    when: neutron.l3ha.enabled
 
   - name: set admin to false for all existing routers
     shell: . /root/stackrc; neutron router-update --admin-state-up=False {{ item }}

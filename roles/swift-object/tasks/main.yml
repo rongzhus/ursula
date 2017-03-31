@@ -44,8 +44,8 @@
     msg: "Triggering service restart for upgrade"
   changed_when: True
   notify: restart swift-object-services
-  when: code_has_changed | default('False') | bool and
-        upgrade | default('False') | bool
+  when: code_has_changed | default(False) and
+        upgrade | default(False)
 
 - meta: flush_handlers
 
@@ -85,4 +85,4 @@
     - "{{ swift.services.swift_object_auditor }}"
     - "{{ swift.services.swift_object_replicator }}"
     - "{{ swift.services.swift_object_updater }}"
-  when: start_object|bool
+  when: start_object

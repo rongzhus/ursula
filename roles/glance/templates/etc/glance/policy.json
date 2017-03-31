@@ -16,7 +16,7 @@
     "upload_image": "",
 
     "get_image_location": "",
-{% if glance.allow_image_locations|default('False')|bool %}
+{% if glance.allow_image_locations|default(False) %}
     "delete_image_location": "",
     "set_image_location": "",
 {% else %}

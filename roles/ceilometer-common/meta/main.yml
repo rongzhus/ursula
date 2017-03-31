@@ -3,17 +3,17 @@ dependencies:
   - role: openstack-meta
   - role: endpoints
   - role: monitoring-common
-    when: monitoring.enabled|default(True)|bool
+    when: monitoring.enabled|default(True)
   - role: logging-config
-    when: logging.enabled|default(True)|bool
+    when: logging.enabled|default(True)
     service: ceilometer
     logdata: "{{ ceilometer.logs }}"
   - role: inspec
     install_inspec_controls: [ceilometer]
     tags: inspec
     when:
-      - inspec.enabled|bool
-      - inspec.controls.ceilometer.enabled|bool
+      - inspec.enabled
+      - inspec.controls.ceilometer.enabled
   - role: openstack-source
     project_name: ceilometer
     project_rev: "{{ ceilometer.source.rev }}"

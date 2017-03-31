@@ -12,7 +12,7 @@
     service_provider_url: "{{ item.service_provider_url }}"
     service_provider_auth_url: "{{ item.service_provider_auth_url }}"
   with_items: "{{ keystone.federation.idp.k2k.service_providers }}"
-  when: keystone.federation.idp.k2k.enabled|bool
+  when: keystone.federation.idp.k2k.enabled
 
 - name: create keystone identity providers
   keystone_identity_provider: auth_url="http://127.0.0.1:{{ endpoints.keystone_admin.port.backend_api }}/v3"

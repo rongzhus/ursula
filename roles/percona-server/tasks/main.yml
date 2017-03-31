@@ -98,8 +98,8 @@
     register: cstat
     until: cstat | succeeded
     retries: 5
-  when: (dbupgrade | default('False') | bool) or
-        (upgrade | default('False') | bool)
+  when: (dbupgrade | default(False)) or
+        (upgrade | default(False))
 
 - name: mysql log dir
   file: dest=/var/log/mysql state=directory mode=2750 owner=mysql group=adm
@@ -228,11 +228,11 @@
     service: name=mysql state=started
     when:  not should_bootstrap_as_primary and
            not already_bootstrapped.rc == 0
-  when: percona.replication|bool
+  when: percona.replication
 
 - name: start percona
   service: name=mysql state=started
-  when: not percona.replication|bool
+  when: not percona.replication
 - name: remove anonymous users
   mysql_user: name='' host={{ item }} state=absent
   with_items:
@@ -251,7 +251,7 @@
   tags:
     - monitoring
     - common
-  when: monitoring.enabled|default('True')|bool
+  when: monitoring.enabled|default(True)
 
 - include: logging.yml
   tags:
@@ -261,4 +261,4 @@
 - include: serverspec.yml
   tags:
     - serverspec
-  when: serverspec.enabled|default('False')|bool
+  when: serverspec.enabled|default(False)

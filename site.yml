@@ -35,31 +35,31 @@
   roles:
     - role: logging
       tags: ['common', 'logging']
-      when: logging.enabled|default("True")|bool
+      when: logging.enabled|default(True)
     - role: common
       tags: ['common','common-base']
     - role: manage-disks
       tags: ['common', 'manage-disks']
-      when: manage_disks.enabled|default('False')|bool
+      when: manage_disks.enabled|default(False)
     - role: serverspec
       tags: ['common', 'serverspec']
-      when: serverspec.enabled|default("False")|bool
+      when: serverspec.enabled|default(False)
     - role: inspec
       install_inspec_controls: [rhel7]
       tags: [common,inspec]
       when:
-        - inspec.enabled|default("False")|bool
+        - inspec.enabled|default(False)
         - ursula_os == 'rhel'
     - role: inspec
       install_inspec_controls: [common]
       tags: [common,inspec]
-      when: inspec.enabled|default("False")|bool
+      when: inspec.enabled|default(False)
     - role: audit
       tags: ['common', 'logging', 'audit']
-      when: audit.enabled|default('False')|bool
+      when: audit.enabled|default(False)
     - role: collectd-client
       tags: ['collectd-client','collectd']
-      when: collectd.enabled|default('False')|bool
+      when: collectd.enabled|default(False)
   environment: "{{ env_vars|default({}) }}"
 
 - name: security and errata
@@ -138,7 +138,7 @@
   roles:
     - role: mongodb-server
       tags: ['mongodb', 'mongodb-server']
-      when: ceilometer.enabled|bool
+      when: ceilometer.enabled
   environment: "{{ env_vars|default({}) }}"
 
 - name: install mongodb arbiter
@@ -147,7 +147,7 @@
   roles:
     - role: mongodb-arbiter
       tags: ['mongodb', 'mongodb-arbiter']
-      when: ceilometer.enabled|bool
+      when: ceilometer.enabled
   environment: "{{ env_vars|default({}) }}"
 
 - name: memcached for keystone and horizon
@@ -165,7 +165,7 @@
     - role: haproxy
       haproxy_type: openstack
       tags: ['haproxy', 'infra']
-      when: haproxy.enabled|bool
+      when: haproxy.enabled
   environment: "{{ env_vars|default({}) }}"
 
 - name: iptables
@@ -270,7 +270,7 @@
   roles:
     - role: cinder-control
       tags: ['openstack', 'cinder', 'control']
-      when: cinder.enabled|bool
+      when: cinder.enabled
   environment: "{{ env_vars|default({}) }}"
 
 - name: cinder data plane
@@ -279,7 +279,7 @@
   roles:
     - role: cinder-data
       tags: ['openstack', 'cinder', 'data', 'cinder-data']
-      when: cinder.enabled|bool
+      when: cinder.enabled
   environment: "{{ env_vars|default({}) }}"
 
 - name: ceph compute
@@ -288,7 +288,7 @@
   roles:
     - role: ceph-compute
       tags: ['ceph', 'ceph-compute']
-      when: ceph.enabled|bool
+      when: ceph.enabled
   environment: "{{ env_vars|default({}) }}"
 
 - name: neutron control plane
@@ -362,7 +362,7 @@
   roles:
     - role: heat
       tags: ['openstack', 'heat', 'control']
-      when: heat.enabled|bool
+      when: heat.enabled
   environment: "{{ env_vars|default({}) }}"
 
 - name: ceilometer control plane
@@ -371,7 +371,7 @@
   roles:
     - role: ceilometer-control
       tags: ['openstack', 'ceilometer', 'control']
-      when: ceilometer.enabled|bool
+      when: ceilometer.enabled
   environment: "{{ env_vars|default({}) }}"
 
 - name: ceilometer data plane
@@ -380,7 +380,7 @@
   roles:
     - role: ceilometer-data
       tags: ['openstack', 'ceilometer', 'data']
-      when: ceilometer.enabled|bool
+      when: ceilometer.enabled
   environment: "{{ env_vars|default({}) }}"
 
 - name: aodh setup
@@ -389,7 +389,7 @@
   roles:
     - role: 'aodh'
       tags: ['openstack', 'aodh']
-      when: ceilometer.enabled|default('false')|bool
+      when: ceilometer.enabled|default(false)
   environment: "{{ env_vars|default({}) }}"
 
 - name: magnum code and config
@@ -398,7 +398,7 @@
   roles:
     - role: magnum
       tags: ['openstack', 'magnum', 'control']
-      when: magnum.enabled|bool and openstack_install_method != 'distro'
+      when: magnum.enabled and openstack_install_method != 'distro'
 
 - name: ironic control plane
   hosts: controller
@@ -406,7 +406,7 @@
   roles:
     - role: ironic-control
       tags: ['openstack', 'ironic', 'control']
-      when: ironic.enabled|bool and openstack_install_method != 'distro'
+      when: ironic.enabled and openstack_install_method != 'distro'
   environment: "{{ env_vars|default({}) }}"
 
 - name: ironic data plane
@@ -415,7 +415,7 @@
   roles:
     - role: ironic-data
       tags: ['openstack', 'ironic', 'data']
-      when: ironic.enabled|bool and openstack_install_method != 'distro'
+      when: ironic.enabled and openstack_install_method != 'distro'
   environment: "{{ env_vars|default({}) }}"
 
 - name: openstack base setup
@@ -432,7 +432,7 @@
   roles:
     - role: 'openstack-network'
       tags: ['openstack', 'setup', 'openstack-network']
-      when: neutron.enable_external_interface|default('false')|bool
+      when: neutron.enable_external_interface|default(false)
   environment: "{{ env_vars|default({}) }}"
 
 # This is the last role because ceph health checks can take up to 2 hours

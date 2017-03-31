@@ -58,7 +58,7 @@
           {% if keystone.federation.sp.saml.providers[0].idp_metadata_min_refresh_delay is defined %}
           refreshDelayFactor="{{ keystone.federation.sp.saml.providers[0].idp_metadata_factor_refresh_delay }}"
           {% endif %}>
-          {% if keystone.federation.sp.saml.providers[0].verify_idp_cert|default(True)|bool -%}
+          {% if keystone.federation.sp.saml.providers[0].verify_idp_cert|default(True) -%}
           <TransportOption provider="CURL" option="64">1</TransportOption>
           <TransportOption provider="CURL" option="81">2</TransportOption>
           <TransportOption provider="CURL" option="10065">/etc/ssl/certs/ca-certificates.crt</TransportOption>

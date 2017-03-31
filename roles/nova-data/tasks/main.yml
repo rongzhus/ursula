@@ -1,6 +1,6 @@
 ---
 - include: ssh.yml
-  when: nova.enable_ssh|bool
+  when: nova.enable_ssh
   tags:
     - ssh
 
@@ -109,7 +109,7 @@
   changed_when: True
   notify: restart nova compute
   when: (project_package.changed or git_result.changed) and
-        upgrade | default('False') | bool
+        upgrade | default(False)
 
 - meta: flush_handlers
 
@@ -126,12 +126,12 @@
   tags:
     - monitoring
     - common
-  when: monitoring.enabled|default('True')|bool
+  when: monitoring.enabled|default(True)
 
 - include: serverspec.yml
   tags:
     - serverspec
-  when: serverspec.enabled|default('False')|bool
+  when: serverspec.enabled|default(False)
 
 - name: /dev/kvm permissions should be 0660 for compliance
   file:

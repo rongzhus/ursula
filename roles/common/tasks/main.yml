@@ -35,7 +35,7 @@
   selinux:
     policy: targeted
     state: "{{ common.selinux.mode }}"
-  when: ursula_os == "rhel" and common.selinux.enabled|bool
+  when: ursula_os == "rhel" and common.selinux.enabled
   tags: selinux
 
 - name: secure paths sudoers operations
@@ -119,7 +119,7 @@
 # Include serial console before kernel-tuning to build serial_console_cmdline
 - include: serial-console.yml tty={{ common.serial_console.name }}
                               baud_rate={{ common.serial_console.baud_rate }}
-  when: common.serial_console.enabled | bool and ursula_os == 'ubuntu'
+  when: common.serial_console.enabled and ursula_os == 'ubuntu'
   tags: ['prereboot']
 
 - include: ipmi.yml
@@ -196,7 +196,7 @@
   tags:
     - monitoring
     - common
-  when: monitoring.enabled|default('True')|bool
+  when: monitoring.enabled|default(True)
 
 - include: audit-logging.yml
   tags:
@@ -206,4 +206,4 @@
 - include: serverspec.yml
   tags:
     - serverspec
-  when: serverspec.enabled|default('False')|bool
+  when: serverspec.enabled|default(False)

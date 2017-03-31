@@ -202,12 +202,12 @@
       OS_IDENTITY_API_VERSION: 3
       PYTHONPATH: "{{ basevenv_lib_dir|default(omit) }}"
     shell: . /root/stackrc; openstack --os-auth-url "{{ endpoints.keystone.url.internal }}/v3" role add --domain "{{ heat_domain.domain.id }}" --user "{{ heat_admin_user.user.id }}" admin
-    when: heat.enabled|bool and heat_admin_user|changed
+    when: heat.enabled and heat_admin_user|changed
   run_once: true
 
 - name: stop heat services before db sync
   service: name={{ item.name }} state=stopped
-  when: (database_create.changed or force_sync|default('false')|bool)
+  when: (database_create.changed or force_sync|default(false))
   with_items:
     - "{{ heat.services.heat_api }}"
     - "{{ heat.services.heat_api_cfn }}"
@@ -216,7 +216,7 @@
 
 - name: sync heat database
   command: heat-manage db_sync
-  when: database_create.changed or force_sync|default('false')|bool
+  when: database_create.changed or force_sync|default(false)
   run_once: true
   changed_when: true
   notify:
@@ -229,8 +229,8 @@
     msg: "Triggering service restart for upgrade"
   changed_when: True
   notify: restart heat services
-  when: code_has_changed | default('False') | bool and
-        upgrade | default('False') | bool
+  when: code_has_changed | default(False) and
+        upgrade | default(False)
 
 - meta: flush_handlers
 
@@ -245,7 +245,7 @@
   tags:
     - monitoring
     - common
-  when: monitoring.enabled|default('True')|bool
+  when: monitoring.enabled|default(True)
 
 - include: logging.yml
   tags:
@@ -255,4 +255,4 @@
 - include: serverspec.yml
   tags:
     - serverspec
-  when: serverspec.enabled|default('False')|bool
+  when: serverspec.enabled|default(False)

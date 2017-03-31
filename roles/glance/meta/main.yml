@@ -4,14 +4,14 @@ dependencies:
     install_inspec_controls: [glance]
     tags: inspec
     when:
-      - inspec.enabled|bool
-      - inspec.controls.glance.enabled|bool
+      - inspec.enabled
+      - inspec.controls.glance.enabled
   - role: openstack-meta
   - role: endpoints
   - role: monitoring-common
-    when: monitoring.enabled|default(True)|bool
+    when: monitoring.enabled|default(True)
   - role: logging-config
-    when: logging.enabled|default(True)|bool
+    when: logging.enabled|default(True)
     service: glance
     logdata: "{{ glance.logs }}"
   - role: openstack-source
@@ -29,7 +29,7 @@ dependencies:
     alternatives: "{{ glance.alternatives }}"
     when: openstack_install_method == 'package'
   - role: collectd-plugin
-    when: collectd is defined and collectd.enabled|bool
+    when: collectd is defined and collectd.enabled
   - role: ceph-defaults
     when: ceph.enabled
   - role: openstack-database

@@ -29,7 +29,7 @@
 
   - name: ensure enable_dhcp
     assert:
-      that: openstack_subnets[0]['enable_dhcp'] == {{ item.enable_dhcp | bool }}
+      that: openstack_subnets[0]['enable_dhcp'] == {{ item.enable_dhcp }}
       msg: "Could not find matching attribute for enable_dhcp."
 
   - name: ensure ipv6_ra_mode

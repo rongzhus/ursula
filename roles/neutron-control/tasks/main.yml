@@ -37,13 +37,13 @@
   service:
     name: "{{ neutron.services.neutron_server.name }}"
     state: stopped
-  when: database_create.changed or force_sync|default('false')|bool
+  when: database_create.changed or force_sync|default(false)
   tags: db-migrate
 
 - name: sync neutron database
   command: neutron-db-manage --config-file /etc/neutron/neutron.conf \
            --config-file /etc/neutron/plugins/ml2/ml2_plugin.ini upgrade head
-  when: database_create.changed or force_sync|default('false')|bool
+  when: database_create.changed or force_sync|default(false)
   run_once: true
   changed_when: true
   notify: restart neutron services
@@ -55,8 +55,8 @@
     msg: "Triggering service restart for upgrade"
   changed_when: True
   notify: restart neutron services
-  when: code_has_changed | default('False') | bool and
-        upgrade | default('False') | bool
+  when: code_has_changed | default(False) and
+        upgrade | default(False)
 
 - meta: flush_handlers
 
@@ -70,4 +70,4 @@
   tags:
     - monitoring
     - common
-  when: monitoring.enabled|default('True')|bool
+  when: monitoring.enabled|default(True)

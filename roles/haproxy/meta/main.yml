@@ -8,6 +8,6 @@ dependencies:
         key_url: '{{ apt_repos.haproxy.key_url }}'
     when: ansible_distribution in ['Ubuntu']
   - role: monitoring-common
-    when: monitoring.enabled|default(True)|bool
+    when: monitoring.enabled|default(True)
   - role: collectd-plugin
-    when: collectd is defined and collectd.enabled|bool
+    when: collectd is defined and collectd.enabled

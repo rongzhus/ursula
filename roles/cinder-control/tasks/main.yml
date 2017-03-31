@@ -26,7 +26,7 @@
 
 - name: sync cinder database
   command: cinder-manage db sync
-  when: database_create.changed or force_sync|default('false')|bool
+  when: database_create.changed or force_sync|default(false)
   run_once: true
   changed_when: true
   notify: restart cinder services
@@ -39,7 +39,7 @@
   changed_when: True
   notify: restart cinder services
   tags: ['ceph', 'ceph-client']
-  when: (code_has_changed | default('False') | bool and upgrade | default('False') | bool) or
+  when: (code_has_changed | default(False) and upgrade | default(False)) or
         (ceph.enabled and cephclient_upgraded|default(false))
 
 - meta: flush_handlers
@@ -54,4 +54,4 @@
   tags:
     - monitoring
     - common
-  when: monitoring.enabled|default('True')|bool
+  when: monitoring.enabled|default(True)

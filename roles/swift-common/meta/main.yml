@@ -3,9 +3,9 @@ dependencies:
   - role: openstack-meta
   - role: endpoints
   - role: monitoring-common
-    when: monitoring.enabled|default(True)|bool
+    when: monitoring.enabled|default(True)
   - role: logging-config
-    when: logging.enabled|default(True)|bool
+    when: logging.enabled|default(True)
     service: swift
     logdata: "{{ swift.logs }}"
   - role: openstack-source
@@ -30,5 +30,5 @@ dependencies:
     install_inspec_controls: [swift]
     tags: inspec
     when:
-      - inspec.enabled|bool
-      - inspec.controls.swift.enabled|bool
+      - inspec.enabled
+      - inspec.controls.swift.enabled

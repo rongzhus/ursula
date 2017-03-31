@@ -4,7 +4,7 @@ dependencies:
   - role: openstack-database
     database_name: cinder
   - role: collectd-plugin
-    when: collectd is defined and collectd.enabled|bool
+    when: collectd is defined and collectd.enabled
   - role: openstack-firewall
     rule_name: cinder
     rules_type_input:

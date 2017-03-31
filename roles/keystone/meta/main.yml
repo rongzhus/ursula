@@ -4,17 +4,17 @@ dependencies:
   - role: keystone-defaults
   - role: endpoints
   - role: monitoring-common
-    when: monitoring.enabled|default(True)|bool
+    when: monitoring.enabled|default(True)
   - role: logging-config
-    when: logging.enabled|default(True)|bool
+    when: logging.enabled|default(True)
     service: keystone
     logdata: "{{ keystone.logs }}"
   - role: inspec
     install_inspec_controls: [keystone]
     tags: inspec
     when:
-      - inspec.enabled|bool
-      - inspec.controls.keystone.enabled|bool
+      - inspec.enabled
+      - inspec.controls.keystone.enabled
   - role: openstack-source
     project_name: keystone
     project_rev: "{{ keystone.source.rev }}"
@@ -35,7 +35,7 @@ dependencies:
     python_post_dependencies: "{{ keystone.distro.python_post_dependencies }}"
     when: openstack_install_method == 'distro'
   - role: collectd-plugin
-    when: collectd is defined and collectd.enabled|bool
+    when: collectd is defined and collectd.enabled
   - role: openstack-database
     database_name: keystone
   - role: apache

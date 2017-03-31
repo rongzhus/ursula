@@ -14,7 +14,7 @@
 - name: neutron metrics
   template: src=etc/collectd/plugins/neutron.conf dest=/etc/collectd/plugins/neutron.conf
   notify: restart collectd
-  when: collectd is defined and collectd.enabled|bool
+  when: collectd is defined and collectd.enabled
   tags: collectd
 
 - name: neutron sla metrics
@@ -29,7 +29,7 @@
                        only_on_ip="{{ undercloud_floating_ip | default(floating_ip) }}"
   when: (neutron.lbaas.enabled == "smart" and
         groups['controller'][0] not in groups['compute']) or
-        neutron.lbaas.enabled|bool
+        neutron.lbaas.enabled
   notify: restart sensu-client
   
 - name: neutron agents check

@@ -6,13 +6,13 @@
 - include: network.yml
 
 - include: ceph.yml
-  when: ceph.enabled|default('False')|bool
+  when: ceph.enabled|default(False)
 
 - include: swift.yml
-  when: swift.enabled|default('False')|bool
+  when: swift.enabled|default(False)
 
 - include: lbaas.yml
-  when: neutron.lbaas.enabled|default('False')|bool
+  when: neutron.lbaas.enabled|default(False)
 
 - name: Begin intergration test
   hosts: controller[0]
@@ -30,10 +30,10 @@
     delegate_to: "{{ host_hosting_default_router }}"
 
 - include: ironic.yml
-  when: ironic.enabled|default('False')|bool
+  when: ironic.enabled|default(False)
 
 - include: ceilometer.yml
-  when: ceilometer.enabled|default('False')|bool
+  when: ceilometer.enabled|default(False)
 
 - include: aodh.yml
-  when: aodh.enabled|default('False')|bool
+  when: aodh.enabled|default(False)

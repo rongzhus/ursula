@@ -29,11 +29,11 @@
   with_items:
     - magnum-api
     - magnum-conductor
-  when: database_create.changed or force_sync|default('false')|bool
+  when: database_create.changed or force_sync|default(false)
 
 - name: sync magnum database
   command: magnum-db-manage upgrade
-  when: database_create.changed or force_sync|default('false')|bool
+  when: database_create.changed or force_sync|default(false)
   run_once: true
   changed_when: true
   notify: restart magnum services
@@ -44,8 +44,8 @@
     msg: "Triggering service restart for upgrade"
   changed_when: True
   notify: restart magnum services
-  when: code_has_changed | default('False') | bool and
-        upgrade | default('False') | bool
+  when: code_has_changed | default(False) and
+        upgrade | default(False)
 
 - meta: flush_handlers
 

@@ -79,13 +79,13 @@
 #Each host can belong to only one undercloud_cidr, so there will be only one nw_gw set per host.
 - name: set gateway address for multi subnet
   set_fact: nw_gw={{ item.gateway }}
-  when: (update_routes|default('false')|bool) and ((ansible_default_ipv4.network ==  ( item.cidr | ipaddr('network') )))
+  when: (update_routes|default(false)) and ((ansible_default_ipv4.network ==  ( item.cidr | ipaddr('network') )))
   with_items: "{{ undercloud_cidr }}"
 
 #Add or replace a static route to all undercloud_cidr subnets via the nw_gw of the current subnet.
 - name: add static route for multi subnet
   command: "/sbin/ip route replace {{ item.cidr }} via {{ nw_gw }}"
-  when: (update_routes|default('false')|bool) and (not (ansible_default_ipv4.network ==  ( item.cidr | ipaddr('network') )))
+  when: (update_routes|default(false)) and (not (ansible_default_ipv4.network ==  ( item.cidr | ipaddr('network') )))
   with_items: "{{ undercloud_cidr }}"
 
 - block:
@@ -99,7 +99,7 @@
  
   - name: Set network config file
     set_fact: nw_config_file="/etc/network/interfaces"
-    when: not found_in_interfaces_d.stat.exists|bool
+    when: not found_in_interfaces_d.stat.exists
  
   #Check if the static routes are present in interface configuration file, so that they are persistant across reboots.
   - name: Check for static routes in {{ nw_config_file }}
@@ -107,7 +107,7 @@
     with_items: "{{ undercloud_cidr }}"
     changed_when: False
     when: ansible_default_ipv4.network  != ( item.cidr | ipaddr('network'))
-  when: ursula_os == 'ubuntu' and (update_routes|default('false')|bool)
+  when: ursula_os == 'ubuntu' and (update_routes|default(false))
 
 - block:
   - name: Check if route configuration exists
@@ -124,7 +124,7 @@
     with_items: "{{ undercloud_cidr }}"
     changed_when: False
     when: ansible_default_ipv4.network  != ( item.cidr | ipaddr('network'))
-  when: ursula_os == 'rhel' and (update_routes|default('false')|bool)
+  when: ursula_os == 'rhel' and (update_routes|default(false))
 
 - name: hosts file
   template: src=etc/hosts dest=/etc/hosts owner=root group=root mode=0644

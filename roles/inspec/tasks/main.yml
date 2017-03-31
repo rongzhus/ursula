@@ -117,6 +117,6 @@
       interval: "{{ inspec.interval }}"
     notify: restart sensu-client
     with_items: "{{ install_inspec_controls }}"
-    when: monitoring.enabled|default(True)|bool
+    when: monitoring.enabled|default(True)
 
   when: install_inspec_controls|length > 0

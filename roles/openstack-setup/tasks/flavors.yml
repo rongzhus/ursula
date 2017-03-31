@@ -44,4 +44,4 @@
       username: admin
       password: "{{ secrets.admin_password  }}"
   with_items: '{{ ironic.flavors | default([]) }}'
-  when: ironic.enabled | default(False) | bool
+  when: ironic.enabled | default(False)

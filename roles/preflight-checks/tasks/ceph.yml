@@ -14,7 +14,7 @@
 # in all.yml with value false
 - name: fail when cinder.common_volume_name is false
   fail: msg="cinder.common_volume_name is not true"
-  when: not cinder.common_volume_name | default('True') | bool
+  when: not cinder.common_volume_name | default(True)
 
 - name: fail when cinder configuration has rbd_volumes
   shell: grep rbd_volumes /etc/cinder/cinder.conf

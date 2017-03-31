@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 
 {
-{% if policy_for_horizon|default('False')|bool %}
+{% if policy_for_horizon|default(False) %}
     "admin_required": "role:admin or is_admin:1 or role:cloud_admin or role:project_admin or rule:owner",
 {% else %}
     "admin_required": "role:admin or is_admin:1",

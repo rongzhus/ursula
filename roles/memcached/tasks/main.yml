@@ -56,4 +56,4 @@
 - include: monitoring.yml
   tags:
     - monitoring
-  when: monitoring.enabled|default('True')|bool
+  when: monitoring.enabled|default(True)

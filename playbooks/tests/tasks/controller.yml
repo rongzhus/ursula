@@ -51,7 +51,7 @@
 
   - name: cinder config has rabbit server
     shell: egrep "rabbit_host = [0-9.]+" /etc/cinder/cinder.conf
-    when: rabbitmq.cluster == false and cinder.enabled|bool
+    when: rabbitmq.cluster == false and cinder.enabled
 
   - name: nova config has rabbit cluster servers
     shell: egrep rabbit_hosts=[0-9.]+:5672,[0-9.]+ /etc/nova/nova.conf
@@ -100,7 +100,7 @@
 
   - name: all backends are up in haproxy
     shell: curl -k -s -u admin:{{ secrets.admin_password }} https://127.0.0.1/haproxy_stats\;csv | awk '/DOWN/ {print;ec=1} END{exit ec}'
-    when: haproxy.rc != 0 and cinder.enabled|bool
+    when: haproxy.rc != 0 and cinder.enabled
 
 #  - name: all backends are up in haproxy
 #    shell: curl -k -s -u admin:{{ secrets.admin_password }} https://127.0.0.1/haproxy_stats\;csv | grep -v cinder | awk '/DOWN/ {print;ec=1} END{exit ec}'
@@ -124,7 +124,7 @@
 
   - name: cinder has a working api
     shell: . /root/stackrc; cinder list | grep ID
-    when: cinder.enabled|bool
+    when: cinder.enabled
 
   - name: glance has the cirros image
     shell: . /root/stackrc; openstack image list | grep cirros

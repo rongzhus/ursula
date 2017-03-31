@@ -6,8 +6,8 @@ dependencies:
     install_inspec_controls: [aodh]
     tags: inspec
     when:
-      - inspec.enabled|bool
-      - inspec.controls.aodh.enabled|bool
+      - inspec.enabled
+      - inspec.controls.aodh.enabled
   - role: openstack-source
     project_name: aodh
     project_rev: "{{ aodh.source.rev }}"
@@ -22,11 +22,11 @@ dependencies:
     alternatives: "{{ aodh.alternatives }}"
     when: openstack_install_method == 'package'
   - role: monitoring-common
-    when: monitoring.enabled|default(True)|bool
+    when: monitoring.enabled|default(True)
   - role: logging-config
     service: aodh
     logdata: "{{ aodh.logs }}"
-    when: logging.enabled|default('True')|bool
+    when: logging.enabled|default(True)
   - role: openstack-database
     database_name: aodh
   - role: openstack-distro

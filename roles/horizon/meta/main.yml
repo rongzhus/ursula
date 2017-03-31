@@ -2,17 +2,17 @@
 dependencies:
   - role: endpoints
   - role: monitoring-common
-    when: monitoring.enabled|default(True)|bool
+    when: monitoring.enabled|default(True)
   - role: logging-config
-    when: logging.enabled|default(True)|bool
+    when: logging.enabled|default(True)
     service: horizon
     logdata: "{{ horizon.logs }}"
   - role: inspec
     install_inspec_controls: [horizon]
     tags: inspec
     when:
-      - inspec.enabled|bool
-      - inspec.controls.horizon.enabled|bool
+      - inspec.enabled
+      - inspec.controls.horizon.enabled
   - role: openstack-source
     project_name: horizon
     project_rev: "{{ horizon.source.rev }}"

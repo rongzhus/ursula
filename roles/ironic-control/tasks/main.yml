@@ -15,7 +15,7 @@
 
 - name: sync ironic database
   command: ironic-dbsync
-  when: database_create.changed or force_sync|default('false')|bool
+  when: database_create.changed or force_sync|default(false)
   changed_when: true
   run_once: true
   notify: restart ironic services
@@ -27,8 +27,8 @@
     msg: "Triggering service restart for upgrade"
   changed_when: True
   notify: restart ironic services
-  when: code_has_changed | default('False') | bool and
-        upgrade | default('False') | bool
+  when: code_has_changed | default(False) and
+        upgrade | default(False)
 
 - meta: flush_handlers
 

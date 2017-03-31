@@ -14,5 +14,5 @@
 - name: mysql metrics
   template: src=etc/collectd/plugins/mysql.conf dest=/etc/collectd/plugins/mysql.conf
   notify: restart collectd
-  when: collectd is defined and collectd.enabled|bool
+  when: collectd is defined and collectd.enabled
   tags: collectd

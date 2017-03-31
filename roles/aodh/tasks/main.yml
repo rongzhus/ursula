@@ -71,7 +71,7 @@
 
 - name: stop aodh services before db sync
   service: name={{ item.name }} state=stopped
-  when: database_create.changed or force_sync|default('false')|bool
+  when: database_create.changed or force_sync|default(false)
   with_items:
     - "{{ aodh.services.aodh_api }}"
     - "{{ aodh.services.aodh_evaluator }}"
@@ -81,7 +81,7 @@
 
 - name: sync aodh database
   command: aodh-dbsync
-  when: database_create.changed or force_sync|default('false')|bool
+  when: database_create.changed or force_sync|default(false)
   run_once: true
   changed_when: true
   notify:
@@ -94,8 +94,8 @@
     msg: "Triggering service restart for upgrade"
   changed_when: True
   notify: restart aodh services
-  when: code_has_changed | default('False') | bool and
-        upgrade | default('False') | bool
+  when: code_has_changed | default(False) and
+        upgrade | default(False)
 
 - meta: flush_handlers
 
@@ -120,15 +120,15 @@
   tags:
     - monitoring
     - common
-  when: monitoring.enabled|default('True')|bool
+  when: monitoring.enabled|default(True)
 
 - include: logging.yml
   tags:
     - logrotate
     - logging
-  when: logging.enabled|default('True')|bool
+  when: logging.enabled|default(True)
 
 - include: serverspec.yml
   tags:
     - serverspec
-  when: serverspec.enabled|default('False')|bool
+  when: serverspec.enabled|default(False)

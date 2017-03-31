@@ -42,12 +42,12 @@
 
     - name: fail if ceph is not enabled
       fail: msg="Ceph is not enabled for this cluster."
-      when: not ceph.enabled|default('False')|bool
+      when: not ceph.enabled|default(False)
       run_once: true
 
     - name: fail if cinder is not enabled
       fail: msg="Cinder is not enabled for this cluster."
-      when: not cinder.enabled|default('False')|bool
+      when: not cinder.enabled|default(False)
       run_once: true
 
     # make sure only one osd host group is configured
@@ -216,7 +216,7 @@
       state: stopped
       must_exist: false
     when:
-      - swift.enabled|default('False')|bool
+      - swift.enabled|default(False)
       - (set_cinder_host or update_cinder_backend)
 
   - name: restart cinder services
@@ -239,7 +239,7 @@
     run_once: True
     delegate_to: "{{ item }}"
     when:
-      - swift.enabled|default('False')|bool
+      - swift.enabled|default(False)
       - (set_cinder_host or update_cinder_backend)
     with_items:
       - "{{ play_hosts }}"

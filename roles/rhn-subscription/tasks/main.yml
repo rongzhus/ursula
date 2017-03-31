@@ -28,4 +28,4 @@
     register: result
     until: result|succeeded
     retries: 5
-  when: subscription.changed or rhn_subscription.repos.refresh|bool
+  when: subscription.changed or rhn_subscription.repos.refresh

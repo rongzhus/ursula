@@ -151,9 +151,9 @@
   delay: 10
 
 - include: federation.yml
-  when: keystone.federation.enabled|bool
+  when: keystone.federation.enabled
   tags:
     - keystone-federation
 
 - include: ldap.yml
-  when: keystone.ldap_domain.enabled|default('False')|bool
+  when: keystone.ldap_domain.enabled|default(False)

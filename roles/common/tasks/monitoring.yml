@@ -239,7 +239,7 @@
                args='--subnet {{ item.cidr }} --gateway {{ nw_gw }} --criticality {{ common.monitoring.sensu_checks.check_static_route.criticality }}'
   when:
     - "{{ undercloud_cidr is defined and undercloud_cidr | length > 1 }}"
-    - update_routes|default('false')|bool
+    - update_routes|default(false)
     - (not (ansible_default_ipv4.network ==  ( item.cidr | ipaddr('network') )))
   with_items: "{{ undercloud_cidr }}"
   notify: restart sensu-client
@@ -247,7 +247,7 @@
 - name: check that large receive offload (LRO) is off
   sensu_check: name=check-large-receive-offload plugin=check-large-receive-offload.py
                args="--devices {{ common.monitoring.sensu_checks.check_lro.devices }} {{ ' --warning' if common.monitoring.sensu_checks.check_lro.warning|bool else ' ' }}"
-  when: common.monitoring.sensu_checks.check_lro.enabled|bool
+  when: common.monitoring.sensu_checks.check_lro.enabled
   notify: restart sensu-client
 
 - name: add sensu to adm group so it can read log files
@@ -266,12 +266,12 @@
     name: check-raid
     check: "{{ sensu_checks.common.check_raid }}"
   notify: restart sensu-client missing ok
-  when: common.hwraid.enabled|bool
+  when: common.hwraid.enabled
 
 - name: check IPMI sensors
   sensu_check: name=check-ipmi-sensors plugin=check-ipmi-sensors.py
                args="--criticality {{ monitoring.ipmi_checks.criticality }}" use_sudo=True
-  when: monitoring.ipmi_checks.enabled|default(False)|bool
+  when: monitoring.ipmi_checks.enabled|default(False)
   notify: restart sensu-client
 
 - block:

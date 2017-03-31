@@ -4,15 +4,15 @@ dependencies:
     install_inspec_controls: [nova_control]
     tags: inspec
     when:
-      - inspec.enabled|bool
-      - inspec.controls.nova_control.enabled|bool
+      - inspec.enabled
+      - inspec.controls.nova_control.enabled
   - role: nova-common
   - role: openstack-database
     database_name: nova
   - role: openstack-database
     database_name: nova_api
   - role: collectd-plugin
-    when: collectd is defined and collectd.enabled|bool
+    when: collectd is defined and collectd.enabled
   - role: openstack-firewall
     rule_name: nova
     rules_type_input:

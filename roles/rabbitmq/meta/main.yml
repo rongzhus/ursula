@@ -8,16 +8,16 @@ dependencies:
         key_url: '{{ apt_repos.rabbitmq.key_url }}'
     when: ursula_os == 'ubuntu'
   - role: monitoring-common
-    when: monitoring.enabled|default(True)|bool
+    when: monitoring.enabled|default(True)
   - role: logging-config
-    when: logging.enabled|default(True)|bool
+    when: logging.enabled|default(True)
     service: rabbitmq
     logdata: "{{ rabbitmq.logs }}"
   - role: inspec
     install_inspec_controls: [rabbitmq]
     tags: inspec
     when:
-      - inspec.enabled|bool
-      - inspec.controls.rabbitmq.enabled|bool
+      - inspec.enabled
+      - inspec.controls.rabbitmq.enabled
   - role: collectd-plugin
-    when: collectd is defined and collectd.enabled|bool
+    when: collectd is defined and collectd.enabled

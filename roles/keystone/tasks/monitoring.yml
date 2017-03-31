@@ -10,7 +10,7 @@
 - name: shibboleth process check
   sensu_process_check: service=shibd
   notify: restart sensu-client
-  when: keystone.federation.enabled|bool and keystone.federation.sp.saml.enabled|bool
+  when: keystone.federation.enabled and keystone.federation.sp.saml.enabled
 
 - name: keystone-api check
   sensu_check: name=check-keystone-api plugin=check-os-api.rb
@@ -29,7 +29,7 @@
 - name: keystone metrics
   template: src=etc/collectd/plugins/keystone.conf dest=/etc/collectd/plugins/keystone.conf
   notify: restart collectd
-  when: collectd is defined and collectd.enabled|bool
+  when: collectd is defined and collectd.enabled
   tags: collectd
 
 - name: keystone sla metrics

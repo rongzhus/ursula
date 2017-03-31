@@ -94,7 +94,7 @@
       password: "{{ secrets.admin_password }}"
     display_name: turtle-vol
     size: 2
-  when: cinder.enabled|bool
+  when: cinder.enabled
 
 - name: nova can attach cinder volume
   environment:
@@ -107,7 +107,7 @@
       password: "{{ secrets.admin_password }}"
     server: turtle-stack
     volume: turtle-vol
-  when: cinder.enabled|bool
+  when: cinder.enabled
 
 - name: instance is active
   shell: . /root/stackrc; openstack server show {{ turtle_stack.openstack.id }} | grep ACTIVE
@@ -177,21 +177,21 @@
       password: "{{ secrets.admin_password }}"
     server: turtle-stack
     volume: turtle-vol
-  when: cinder.enabled|bool
+  when: cinder.enabled
 
 - name: write volume in VM
   shell: ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
          -i /root/.ssh/id_rsa
          cirros@{{ floating_ip.floating_ip.floating_ip_address }}
          sudo dd if=/dev/zero of=/dev/vdb count=100 bs=1M
-  when: cinder.enabled|bool
+  when: cinder.enabled
 
 - name: detach volume and delete volume
   shell: . /root/stackrc && {{ item }}
   with_items:
     - openstack server remove volume turtle-stack turtle-vol
     - openstack volume delete turtle-vol
-  when: cinder.enabled|bool
+  when: cinder.enabled
 
 - name: delete resources
   shell: . /root/stackrc && {{ item }}

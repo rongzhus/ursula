@@ -12,5 +12,5 @@
 - name: haproxy metrics
   template: src=etc/collectd/plugins/haproxy.conf dest=/etc/collectd/plugins/haproxy.conf
   notify: restart collectd
-  when: collectd is defined and collectd.enabled|bool
+  when: collectd is defined and collectd.enabled
   tags: collectd

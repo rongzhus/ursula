@@ -1,15 +1,15 @@
 ---
 - include: users.yml
-  when: openstack_setup.add_users|bool or openstack_setup.add_users is undefined
+  when: openstack_setup.add_users or openstack_setup.add_users is undefined
 
 - include: images.yml
-  when: openstack_setup.add_images|bool or openstack_setup.add_images is undefined
+  when: openstack_setup.add_images or openstack_setup.add_images is undefined
 
 - include: networks.yml
-  when: openstack_setup.add_networks|bool or openstack_setup.add_networks is undefined
+  when: openstack_setup.add_networks or openstack_setup.add_networks is undefined
 
 - include: cinder.yml
-  when: cinder.enabled|default('True')|bool
+  when: cinder.enabled|default(True)
   tags: ceph
 
 - include: flavors.yml
@@ -18,6 +18,6 @@
   tags: hostagg
  
 - include: dispersion.yml
-  when: (services_setup.changed or upgrade|default('False')|bool) and
-         swift.enabled|default('False')|bool
+  when: (services_setup.changed or upgrade|default(False)) and
+         swift.enabled|default(False)
 

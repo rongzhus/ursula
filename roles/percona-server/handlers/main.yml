@@ -6,4 +6,4 @@
   service:
     name: mysql
     state: restarted
-  when: upgrade | default('False') | bool
+  when: upgrade | default(False) 

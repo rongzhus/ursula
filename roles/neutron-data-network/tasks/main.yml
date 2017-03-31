@@ -12,7 +12,7 @@
 
 - name: install packages for l3ha
   package: name=keepalived
-  when: neutron.l3ha.enabled|bool
+  when: neutron.l3ha.enabled
   register: result
   until: result|succeeded
   retries: 5
@@ -73,7 +73,7 @@
       envs: "{{ neutron.service.envs }}"
     when: ((neutron.lbaas.enabled == "smart" and
            groups['controller'][0] not in groups['compute']) or
-           neutron.lbaas.enabled|bool)
+           neutron.lbaas.enabled)
     with_items:
       - "{{ neutron.services.neutron_lbaasv2_agent }}"
   when: ursula_os == 'ubuntu'
@@ -112,7 +112,7 @@
       kill_mode: "{{ item.kill_mode }}"
     when: ((neutron.lbaas.enabled == "smart" and
            groups['controller'][0] not in groups['compute']) or
-           neutron.lbaas.enabled|bool)
+           neutron.lbaas.enabled)
     with_items:
       - "{{ neutron.services.neutron_lbaasv2_agent }}"
   when: ursula_os == 'rhel'
@@ -135,7 +135,7 @@
   notify: restart neutron lbaas agent
   when: (neutron.lbaas.enabled == "smart" and
          groups['controller'][0] not in groups['compute']) or
-         neutron.lbaas.enabled|bool
+         neutron.lbaas.enabled
 
 - name: symlink other neutron lbaas haproxy templates
   file:
@@ -151,7 +151,7 @@
   notify: restart neutron lbaas agent
   when:
     - openstack_install_method != 'distro'
-    - (neutron.lbaas.enabled == "smart" and groups['controller'][0] not in groups['compute']) or neutron.lbaas.enabled|bool
+    - (neutron.lbaas.enabled == "smart" and groups['controller'][0] not in groups['compute']) or neutron.lbaas.enabled
 
 - name: symlink other neutron lbaas haproxy templates (distro)
   file:
@@ -167,7 +167,7 @@
   notify: restart neutron lbaas agent
   when:
     - openstack_install_method == 'distro'
-    - (neutron.lbaas.enabled == "smart" and groups['controller'][0] not in groups['compute']) or neutron.lbaas.enabled|bool
+    - (neutron.lbaas.enabled == "smart" and groups['controller'][0] not in groups['compute']) or neutron.lbaas.enabled
 
 - name: neutron lbaas agent config
   template:
@@ -176,15 +176,15 @@
     mode: 0644
   when: (neutron.lbaas.enabled == "smart" and
          groups['controller'][0] not in groups['compute']) or
-         neutron.lbaas.enabled|bool
+         neutron.lbaas.enabled
   notify:
     - restart neutron lbaas agent
 
 - name: kill namespaced neutron processes on upgrade
   command: pkill -f {{ item }}
   failed_when: False
-  when: code_has_changed | default('False') | bool and
-        upgrade | default('False') | bool
+  when: code_has_changed | default(False) and
+        upgrade | default(False) 
   with_items:
     - neutron-keepalived-state-change
     - neutron-ns-metadata-proxy
@@ -194,8 +194,8 @@
     msg: "Triggering service restart for upgrade"
   changed_when: True
   notify: restart neutron services
-  when: code_has_changed | default('False') | bool and
-        upgrade | default('False') | bool
+  when: code_has_changed | default(False) and
+        upgrade | default(False)
 
 - meta: flush_handlers
 
@@ -216,7 +216,7 @@
     enabled: True
   when: (neutron.lbaas.enabled == "smart" and
          groups['controller'][0] not in groups['compute']) or
-         neutron.lbaas.enabled|bool
+         neutron.lbaas.enabled
 
 - include: ipchanged.yml
 
@@ -224,4 +224,4 @@
   tags:
     - monitoring
     - common
-  when: monitoring.enabled|default('True')|bool
+  when: monitoring.enabled|default(True)

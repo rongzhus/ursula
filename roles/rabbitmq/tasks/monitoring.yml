@@ -36,5 +36,5 @@
 - name: rabbit metrics
   template: src=etc/collectd/plugins/rabbitmq.conf dest=/etc/collectd/plugins/rabbitmq.conf
   notify: restart collectd
-  when: collectd is defined and collectd.enabled|bool
+  when: collectd is defined and collectd.enabled
   tags: collectd

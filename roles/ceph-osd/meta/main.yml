@@ -1,9 +1,9 @@
 ---
 dependencies:
   - role: monitoring-common
-    when: monitoring.enabled|default(True)|bool
+    when: monitoring.enabled|default(True)
   - role: logging-config
-    when: logging.enabled|default(True)|bool
+    when: logging.enabled|default(True)
     service: ceph
     logdata: "{{ ceph.logs }}"
   - role: ceph-config

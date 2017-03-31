@@ -24,7 +24,7 @@
   service: name="{{ cinder.tgt_service[ursula_os] }}" state=started
 
 - include: volume_group.yml
-  when: cinder.create_vg|bool and ( cinder.fixed_key is not defined or (cinder.fixed_key is defined and "compute" not in group_names) )
+  when: cinder.create_vg and ( cinder.fixed_key is not defined or (cinder.fixed_key is defined and "compute" not in group_names) )
 
 - name: iscsi start
   service: name="{{ cinder.iscsi_service[ursula_os] }}" state=started
@@ -57,7 +57,7 @@
       user: "{{ item.user }}"
       cmd: "{{ item.cmd }}"
       config_dirs: "{{ item.config_dirs }}"
-    when: swift.enabled|default("false")|bool
+    when: swift.enabled|default(false)
     with_items:
       - "{{ cinder.services.cinder_backup }}"
   when: ursula_os == 'ubuntu'
@@ -87,7 +87,7 @@
       cmd: "{{ item.cmd }}"
       config_files: "{{ item.config_files }}"
       restart: "{{ item.restart }}"
-    when: swift.enabled|default("false")|bool
+    when: swift.enabled|default(false)
     with_items:
       - "{{ cinder.services.cinder_backup }}"
   when: ursula_os == 'rhel'
@@ -99,7 +99,7 @@
   notify:
     - restart cinder services
     - restart cinder backup service
-  when: (code_has_changed | default('False') | bool and upgrade | default('False') | bool) or
+  when: (code_has_changed | default(False) and upgrade | default(False)) or
         (ceph.enabled and cephclient_upgraded|default(false))
 
 - meta: flush_handlers
@@ -120,11 +120,11 @@
     enabled: True
   delegate_to: "{{ item }}"
   run_once: True
-  when: swift.enabled|default("false")|bool
+  when: swift.enabled|default(false)
   with_items: "{{ play_hosts }}"
 
 - include: monitoring.yml
-  when: monitoring.enabled|default('True')|bool
+  when: monitoring.enabled|default(True)
   tags:
     - monitoring
     - common

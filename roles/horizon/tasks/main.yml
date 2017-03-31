@@ -3,7 +3,7 @@
   - name: "Install or remove openstack-neutron-lbaas-ui"
     yum:
       name: openstack-neutron-lbaas-ui
-      state: "{{ (neutron.lbaas.enabled | bool) | ternary('present', 'absent') }}"
+      state: "{{ (neutron.lbaas.enabled) | ternary('present', 'absent') }}"
     register: yum_package
     until: yum_package|succeeded
     retries: 5
@@ -102,7 +102,7 @@
     file:
       src: "{{ horizon.horizon_lib_dir }}/lib/python2.7/site-packages/neutron_lbaas_dashboard/enabled/_1481_project_ng_loadbalancersv2_panel.py"
       path: "{{ horizon.horizon_lib_dir }}/lib/python2.7/site-packages/openstack_dashboard/local/enabled/_1481_project_ng_loadbalancersv2_panel.py"
-      state: "{{ (neutron.lbaas.enabled | bool) | ternary('link', 'absent') }}"
+      state: "{{ (neutron.lbaas.enabled ) | ternary('link', 'absent') }}"
     notify: reload apache
   when: ursula_os == 'ubuntu'
 
@@ -113,12 +113,12 @@
       path: /etc/openstack-dashboard/local_settings.d/_11_rcue_theme.py
     register: rcue
     when:
-      - horizon.customize|default('False')|bool
+      - horizon.customize|default(False)
 
   - name: Disable OSP custom dashboard (rhel osp)
     command: mv /etc/openstack-dashboard/local_settings.d/_11_rcue_theme.py /etc/openstack-dashboard/local_settings.d/_11_rcue_theme.disabled
     when:
-      - horizon.customize|default('False')|bool
+      - horizon.customize|default(False)
       - ursula_os == 'rhel'
       - rcue.stat.exists == True
     notify: restart apache
@@ -128,13 +128,13 @@
       path: /etc/openstack-dashboard/local_settings.d/_11_rcue_theme.disabled
     register: rcued
     when:
-      - not horizon.customize|default('False')|bool
+      - not horizon.customize|default(False)
       - ursula_os == 'rhel'
 
   - name: Enable OSP custom dashboard (rhel osp)
     command: mv /etc/openstack-dashboard/local_settings.d/_11_rcue_theme.disabled /etc/openstack-dashboard/local_settings.d/_11_rcue_theme.py
     when:
-      - not horizon.customize|default('False')|bool
+      - not horizon.customize|default(False)
       - ursula_os == 'rhel'
       - rcued.stat.exists == True
     notify: restart apache
@@ -187,7 +187,7 @@
 # Use custom policy to allow cloud_admin admin panel access
 - name: set horizon keystone policy fact
   set_fact: policy_for_horizon=True
-  when: horizon.customize|default('False')|bool
+  when: horizon.customize|default(False)
 
 - name: trigger restart on upgrades
   debug:
@@ -195,8 +195,8 @@
   changed_when: True
   notify: restart apache
   when:
-    - code_has_changed | default('False') | bool
-    - upgrade | default('False') | bool
+    - code_has_changed | default(False)
+    - upgrade | default(False)
 
 - meta: flush_handlers
 
@@ -213,7 +213,7 @@
   tags:
     - monitoring
     - common
-  when: monitoring.enabled|default('True')|bool
+  when: monitoring.enabled|default(True)
 
 - include: logging.yml
   tags:
@@ -224,4 +224,4 @@
 - include: serverspec.yml
   tags:
     - serverspec
-  when: serverspec.enabled|default('False')|bool
+  when: serverspec.enabled|default(False)
