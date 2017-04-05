@@ -100,9 +100,6 @@ apt_repos:
   docker:
     repo: https://apt-mirror.openstack.blueboxgrid.com/docker/ubuntu
     key_url: https://apt-mirror.openstack.blueboxgrid.com/keys/docker.key
-  bbg_ubuntu:
-    repo: https://apt-mirror.openstack.blueboxgrid.com/blueboxcloud_giftwrap/blueboxcloud/giftwrap/ubuntu
-    key_url: https://apt-mirror.openstack.blueboxgrid.com/keys/blueboxcloud_giftwrap.key
   blueboxcloud_giftwrap:
     repo: https://apt-mirror.openstack.blueboxgrid.com/blueboxcloud_giftwrap/blueboxcloud/giftwrap/ubuntu
     key_url: https://apt-mirror.openstack.blueboxgrid.com/keys/blueboxcloud_giftwrap.key
