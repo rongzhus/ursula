@@ -48,6 +48,10 @@
             helpLocation="/about.html"
             styleSheet="/shibboleth-sp/main.css"/>
 
+{% if keystone.federation.sp.saml.providers[0].metadata_provider_type == 'file' %}
+        <MetadataProvider type="XML" path="{{keystone.federation.sp.saml.providers[0].metadata_file_path}}" />
+{% endif %}
+{% if keystone.federation.sp.saml.providers[0].metadata_provider_type == 'url' %}
         <MetadataProvider type="XML" uri="{{ keystone.federation.sp.saml.providers[0].idp_metadata_url }}"
           backingFilePath="idp-metadata-provider-backup.xml"
           {% if keystone.federation.sp.saml.providers[0].idp_metadata_min_refresh_delay is defined %}
@@ -65,6 +69,7 @@
           <TransportOption provider="CURL" option="10065">/etc/ssl/certs/ca-certificates.crt</TransportOption>
           {% endif -%}
         </MetadataProvider>
+{% endif %}
         <AttributeExtractor type="XML" validate="true" reloadChanges="false" path="attribute-map.xml"/>
         <AttributeResolver type="Query" subjectMatch="true"/>
         <AttributeFilter type="XML" validate="true" path="attribute-policy.xml"/>

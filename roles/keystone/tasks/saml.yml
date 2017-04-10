@@ -18,6 +18,12 @@
             dest=/etc/shibboleth/attribute-map.xml
   notify: restart shibboleth
 
+- name: Create idp metadata file
+  template: src=etc/shibboleth/idp_metadata.xml
+            dest=/etc/shibboleth/idp_metadata.xml
+  when: keystone.federation.sp.saml.providers[0].metadata_provider_type == 'file'
+  notify: restart shibboleth
+
 - name: configure shibboleth settings
   template:
     src: etc/shibboleth/shibboleth2.xml
