@@ -65,6 +65,7 @@ keystone:
         enabled: False
         horizon_enabled: False
         support_contact: ""
+        auth_signing: True
         # These are service providers that will be configured into Shibboleth
         providers:
           - keystone_id: Place_holder_IDP

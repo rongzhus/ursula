@@ -28,7 +28,8 @@
     <ReplayCache StorageService="mc"/>
     <ArtifactMap StorageService="mc" artifactTTL="180"/>
 
-    <ApplicationDefaults entityID="{{ keystone.federation.sp.saml.sp_id }}">
+    <ApplicationDefaults entityID="{{ keystone.federation.sp.saml.sp_id }}"
+      {%- if keystone.federation.sp.saml.auth_signing %} signing="true"{%- endif-%}>
         <Sessions lifetime="28800" timeout="3600" relayState="ss:mc"
                   checkAddress="false" handlerSSL="false" cookieProps="http">
             <SSO entityID="{{ keystone.federation.sp.saml.providers[0].saml_entity_id }}" ECP="true">
