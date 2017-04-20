@@ -3,11 +3,6 @@ dependencies:
   - role: endpoints
   - role: apt-repos
     repos:
-      - repo: 'deb {{ apt_repos.bbg_ubuntu.repo }} {{ ansible_lsb.codename }} main'
-        key_url: '{{ apt_repos.bbg_ubuntu.key_url }}'
-    when: ansible_architecture != "ppc64le"
-  - role: apt-repos
-    repos:
       - repo: 'deb {{ apt_repos.hwraid.repo }} precise main'
         key_url: '{{ apt_repos.hwraid.key_url }}'
     when: common.hwraid.enabled|bool and ansible_distribution_version == "12.04"
