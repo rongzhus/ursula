@@ -11,6 +11,9 @@ rabbitmq:
   numqueues_warning_multiplier: 60
   numqueues_critical_multiplier: 120
   nofile: 10240
+  version:
+    rabbitmq_server: '3.6.9*'
+    esl_erlang: '1:19*'
   monitoring:
     sensu_checks:
       rabbitmq_cluster:
