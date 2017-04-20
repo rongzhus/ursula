@@ -5,35 +5,31 @@
 - name: add rabbitmq config directory
   file: dest=/etc/rabbitmq state=directory owner=root mode=0755
 
-# pin version of esl-erlang for
-# https://github.com/rabbitmq/rabbitmq-management/issues/244
-# lift when rabbitmq-server 3.6.4 is released
 - name: install erlang-solutions erlang
   apt:
-    pkg: "{{ item }}"
+    pkg: esl-erlang={{ rabbitmq.version.esl_erlang }}
     force: True
-  with_items:
-    - esl-erlang=1:18.3
   register: result
   until: result|succeeded
   retries: 5
+  notify: restart rabbitmq
 
 - name: install rabbitmq-server
   apt:
-    pkg: "{{ item }}"
-  with_items:
-    - rabbitmq-server
-    #- esl-erlang
+    pkg: rabbitmq-server={{ rabbitmq.version.rabbitmq_server }}
   register: result
   until: result|succeeded
   retries: 5
+  notify: restart rabbitmq
 
 - name: upgrade rabbitmq for CVEs on upgrade
   apt:
     pkg: "{{ item }}"
     update_cache: yes
   with_items:
-    - rabbitmq-server=3.6.9*
+    - esl-erlang={{ rabbitmq.version.esl_erlang }}
+    - rabbitmq-server={{ rabbitmq.version.rabbitmq_server }}
+  notify: restart rabbitmq
   when: upgrade | default('False') | bool
 
 - name: add rabbitmq environment configuration
