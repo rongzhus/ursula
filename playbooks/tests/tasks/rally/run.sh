@@ -22,7 +22,7 @@ source /root/stackrc
 install_rally() {
     attempt=1
     until [[ $attempt == ${RALLY_MAX_RETRY} ]]; do
-        wget -O  install_rally.sh ${RALLY_INSTALL_URL};chmod +x install_rally.sh; ./install_rally.sh -y -d rally
+        curl -O ${RALLY_INSTALL_URL};chmod +x install_rally.sh; ./install_rally.sh -y -d rally
         if [[ -d rally ]]; then
             break
         else
