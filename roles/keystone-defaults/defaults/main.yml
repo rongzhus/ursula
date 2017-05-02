@@ -65,6 +65,7 @@ keystone:
         enabled: False
         horizon_enabled: False
         support_contact: ""
+        auth_signing: True
         # These are service providers that will be configured into Shibboleth
         providers:
           - keystone_id: Place_holder_IDP
@@ -73,6 +74,9 @@ keystone:
             enabled: True
             k2k_enabled: False
             verify_idp_cert: True
+            metadata_provider_type: url
+            metadata_file_path: /etc/shibboleth/idp_metadata.xml
+            metadata_file_content: None
             idp_metadata_min_refresh_delay: 600
             idp_metadata_max_refresh_delay: 3600
             idp_metadata_factor_refresh_delay: 0.75
